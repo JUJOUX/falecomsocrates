@@ -1,48 +1,7 @@
-import numpy as np
-import pandas as pd
-import google.generativeai as genai
 
-
-genai.configure(api_key=GOOGLE_API_KEY)
-
-for m in genai.list_models():
-  if 'embedContent' in m.supported_generation_methods:
-    print(m.name)
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-# Carregando dados de treinamento
-textos_socrates = [
     # Frases de Sócrates
     "A vida irrefletida não vale a pena ser vivida",
     "Eu só sei que nada sei ",
     "O conhecimento é a virtude da alma.",
     "O homem sábio é aquele que sabe que não sabe.",
     "A maior batalha é a que se trava dentro de si mesmo.",
-]
-
-# Criando o vetorizador TF-IDF
-vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(textos_socrates)
-
-# Definindo o vocabulário de termos filosóficos
-vocabulario = vectorizer.get_feature_names_out()
-
-# Função para gerar resposta do chatbot
-def gerar_resposta(pergunta):
-    # Transformando a pergunta em um vetor TF-IDF
-    pergunta_vetor = vectorizer.transform([pergunta])
-
-    # Calculando a similaridade entre a pergunta e os textos de Sócrates
-    similaridades = np.dot(pergunta_vetor, X.T)
-
-    # Encontrando o texto mais similar
-    indice_mais_similar = np.argmax(similaridades)
-
-    # Retornando a resposta (texto de Sócrates mais similar)
-    return textos_socrates[indice_mais_similar]
-
-# Exemplo de uso
-pergunta_usuario = "o que e um homem sabio?"
-resposta_chatbot = gerar_resposta(pergunta_usuario)
-print(f"Chatbot: {resposta_chatbot}")
